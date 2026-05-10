@@ -8,10 +8,13 @@ const useSocketStore = create((set, get) => ({
 
   connect: (token) => {
     if (get().socket?.connected) return;
-    const socket = io('/', {
-      auth: { token },
-      transports: ['websocket'],
-    });
+    const socket = io(
+      import.meta.env.VITE_SOCKET_URL,
+      {
+        auth: { token },
+        transports: ['websocket'],
+      }
+    );
     socket.on('connect', () => set({ socket }));
     socket.on('user:online', (u) =>
       set((s) => ({ onlineUsers: [...s.onlineUsers.filter((x) => x.userId !== u.userId), u] }))
