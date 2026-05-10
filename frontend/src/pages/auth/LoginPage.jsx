@@ -1,28 +1,44 @@
 ﻿import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Compass, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+
+import {
+  Compass,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff
+} from 'lucide-react';
+
 import toast from 'react-hot-toast';
+
 import useAuthStore from '../../store/authStore';
+
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, isLoading } = useAuthStore();
+
+  const {
+    login,
+    isLoading
+  } = useAuthStore();
 
   const [form, setForm] = useState({
     email: '',
     password: ''
   });
 
-  const [showPass, setShowPass] = useState(false);
+  const [showPass, setShowPass] =
+    useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       await login(form);
+
       navigate('/trips');
     } catch (err) {
       toast.error(
@@ -32,11 +48,44 @@ export default function LoginPage() {
     }
   };
 
+  // Demo Login
+  const handleDemoLogin = async () => {
+    try {
+      const credentials = {
+        email: 'alice@wandersync.dev',
+        password: 'Password123!'
+      };
+
+      setForm(credentials);
+
+      await login(credentials);
+
+      toast.success(
+        'Logged in as demo user'
+      );
+
+      navigate('/trips');
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message ||
+        'Demo login failed'
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-ink-900 flex items-center justify-center p-4">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{
+          opacity: 0,
+          y: 20
+        }}
+
+        animate={{
+          opacity: 1,
+          y: 0
+        }}
+
         className="w-full max-w-md"
       >
         {/* Logo */}
@@ -66,6 +115,7 @@ export default function LoginPage() {
           </p>
         </div>
 
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
           className="card p-6 space-y-4"
@@ -85,6 +135,7 @@ export default function LoginPage() {
             required
           />
 
+          {/* Password */}
           <div>
             <label className="label">
               Password
@@ -102,33 +153,44 @@ export default function LoginPage() {
                     ? 'text'
                     : 'password'
                 }
+
                 className="input pl-9 pr-10"
+
                 placeholder="••••••••"
+
                 value={form.password}
+
                 onChange={(e) =>
                   setForm({
                     ...form,
                     password: e.target.value
                   })
                 }
+
                 required
               />
 
               <button
                 type="button"
+
                 onClick={() =>
                   setShowPass(!showPass)
                 }
+
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-sand-500 hover:text-sand-300"
               >
                 {showPass
-                  ? <EyeOff size={16} />
-                  : <Eye size={16} />
-                }
+                  ? (
+                    <EyeOff size={16} />
+                  )
+                  : (
+                    <Eye size={16} />
+                  )}
               </button>
             </div>
           </div>
 
+          {/* Forgot password */}
           <div className="flex justify-end">
             <Link
               to="/forgot-password"
@@ -138,6 +200,7 @@ export default function LoginPage() {
             </Link>
           </div>
 
+          {/* Login Button */}
           <Button
             type="submit"
             className="w-full justify-center"
@@ -145,8 +208,19 @@ export default function LoginPage() {
           >
             Sign in
           </Button>
+
+          {/* Demo Button */}
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full justify-center"
+            onClick={handleDemoLogin}
+          >
+            Try Demo Account
+          </Button>
         </form>
 
+        {/* Footer */}
         <p className="text-center text-sand-500 text-sm mt-4">
           No account?{' '}
 

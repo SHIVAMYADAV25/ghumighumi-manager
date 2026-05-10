@@ -1,9 +1,18 @@
 ﻿import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Compass, Mail, Lock, User } from 'lucide-react';
+
+import {
+  Compass,
+  Mail,
+  Lock,
+  User
+} from 'lucide-react';
+
 import toast from 'react-hot-toast';
+
 import useAuthStore from '../../store/authStore';
+
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 
@@ -12,6 +21,7 @@ export default function RegisterPage() {
 
   const {
     register: doRegister,
+    login,
     isLoading
   } = useAuthStore();
 
@@ -35,7 +45,9 @@ export default function RegisterPage() {
     try {
       await doRegister(form);
 
-      toast.success('Account created!');
+      toast.success(
+        'Account created!'
+      );
 
       navigate('/trips');
     } catch (err) {
@@ -46,13 +58,45 @@ export default function RegisterPage() {
     }
   };
 
+  // Demo Login
+  const handleDemoLogin = async () => {
+    try {
+      const credentials = {
+        email: 'alice@wandersync.dev',
+        password: 'Password123!'
+      };
+
+      await login(credentials);
+
+      toast.success(
+        'Logged in as demo user'
+      );
+
+      navigate('/trips');
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message ||
+        'Demo login failed'
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-ink-900 flex items-center justify-center p-4">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{
+          opacity: 0,
+          y: 20
+        }}
+
+        animate={{
+          opacity: 1,
+          y: 0
+        }}
+
         className="w-full max-w-md"
       >
+        {/* Logo */}
         <div className="text-center mb-8">
           <Link
             to="/"
@@ -79,6 +123,7 @@ export default function RegisterPage() {
           </p>
         </div>
 
+        {/* Form */}
         <form
           onSubmit={handleSubmit}
           className="card p-6 space-y-4"
@@ -135,8 +180,19 @@ export default function RegisterPage() {
           >
             Create account
           </Button>
+
+          {/* Demo Button */}
+          <Button
+            type="button"
+            variant="secondary"
+            className="w-full justify-center"
+            onClick={handleDemoLogin}
+          >
+            Try Demo Account
+          </Button>
         </form>
 
+        {/* Footer */}
         <p className="text-center text-sand-500 text-sm mt-4">
           Already have an account?{' '}
 
