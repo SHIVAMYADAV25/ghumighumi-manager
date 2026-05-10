@@ -10,8 +10,8 @@
 | Resource | Link |
 |---|---|
 | **Frontend** | `https://ghumighumi-manager.vercel.app` |
-| **Backend API** | `[https://ghumighumi-manager.onrender.com](https://ghumighumi-manager.onrender.com)` |
-| **API Health** | `[https://wandersync-api.onrender.com](https://ghumighumi-manager.onrender.com)/health` |
+| **Backend API** | `https://ghumighumi-manager.onrender.com` |
+| **API Health** | `https://ghumighumi-manager.onrender.com/health` |
 
 **Demo credentials** (after running seed):
 ```
